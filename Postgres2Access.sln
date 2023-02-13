@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1082
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postgres2Access", "Postgres2Access\Postgres2Access.csproj", "{E1B0FFCA-564E-49E5-ACF0-F6C6D2C640F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access2PostgreSQL", "Access2Postgres\Access2PostgreSQL.csproj", "{66DC2A2C-BBEA-4FD2-BB77-21BDF79253BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1B0FFCA-564E-49E5-ACF0-F6C6D2C640F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1B0FFCA-564E-49E5-ACF0-F6C6D2C640F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1B0FFCA-564E-49E5-ACF0-F6C6D2C640F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1B0FFCA-564E-49E5-ACF0-F6C6D2C640F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66DC2A2C-BBEA-4FD2-BB77-21BDF79253BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66DC2A2C-BBEA-4FD2-BB77-21BDF79253BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66DC2A2C-BBEA-4FD2-BB77-21BDF79253BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66DC2A2C-BBEA-4FD2-BB77-21BDF79253BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CA25F6A5-10B1-46AF-9A36-64190C159BC3}
+	EndGlobalSection
+EndGlobal
