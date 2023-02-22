@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
@@ -18,19 +17,27 @@ namespace Access2PostgreSQL
         static int tableRecordCount = 0;
         static int rowCount = 0;
 
+        private DbConnectionStringBuilder cnStringyBuilder = null;
+
         public PostgreSQLExport()
         {
 
         }
 
-        public void ExportDataTable(DataTable table, string tblName)
+        public void ExportDataTable(DataTable table, string tblName, Options options)
         {
             try
             {
-                DbProviderFactory f = DbProviderFactories.GetFactory(ConfigurationManager.ConnectionStrings["Default"].ProviderName);
-                using (DbConnection cn = f.CreateConnection())
+                DbProviderFactory pf = DbProviderFactories.GetFactory("Npgsql");
+                cnStringyBuilder = pf.CreateConnectionStringBuilder();
+                cnStringyBuilder.Add("Host", options.Host);
+                cnStringyBuilder.Add("Database", options.Database);
+                cnStringyBuilder.Add("Username", options.Username);
+                cnStringyBuilder.Add("Password", options.Password);
+
+                using (DbConnection cn = pf.CreateConnection())
                 {
-                    string connectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
+                    string connectionString = cnStringyBuilder.ConnectionString;
                     cn.ConnectionString = connectionString;
 
                     DbCommand cmd = cn.CreateCommand();
@@ -52,7 +59,7 @@ namespace Access2PostgreSQL
                     selectCommand.CommandText = $"SELECT * FROM public.{tblName}";
                     selectCommand.CommandType = CommandType.Text;
 
-                    DbDataAdapter dataAdapter = f.CreateDataAdapter();
+                    DbDataAdapter dataAdapter = pf.CreateDataAdapter();
                     dataAdapter.SelectCommand = selectCommand;
                     dataAdapter.AddRowUpdatedHandler((sender, e) =>
                     {
@@ -62,7 +69,7 @@ namespace Access2PostgreSQL
                         ProgressBarUtility.WriteProgressBar(percent, true);
                     });
 
-                    DbCommandBuilder commandBuilder = f.CreateCommandBuilder();
+                    DbCommandBuilder commandBuilder = pf.CreateCommandBuilder();
                     commandBuilder.DataAdapter = dataAdapter;
                     commandBuilder.QuotePrefix = "\"";
                     commandBuilder.QuoteSuffix = "\"";

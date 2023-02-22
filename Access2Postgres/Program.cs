@@ -16,13 +16,15 @@ namespace Access2PostgreSQL
     class Program
     {
         private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static DbConnectionStringBuilder cnStringyBuilder = null;
+        private static Options options = null;
 
         static void Main(string[] args)
         {
             log4net.Config.XmlConfigurator.Configure();
             _log.Info("Application is starting...");
 
-            Options options = new Options();
+            options = new Options();
             var result = Parser.Default.ParseArguments<Options>(args).WithParsed(o => { options = o; });
 
             if (options.DbFilenames != null && options.DbFilenames.Count() > 0)
@@ -89,7 +91,7 @@ namespace Access2PostgreSQL
             Console.WriteLine($"Importing table '{tblName}'...");
 
             PostgreSQLExport pe = new PostgreSQLExport();
-            pe.ExportDataTable(dt, tblName);
+            pe.ExportDataTable(dt, tblName, options);
         }
 
         private static string BuildConnectionString(string path)
@@ -178,6 +180,18 @@ namespace Access2PostgreSQL
         [Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages.")]
         public bool Verbose { get; set; }
 
+        [Option('h', "host", Required = false, Default = "localhost", HelpText = "database name")]
+        public string Host { get; set; }
+
+        [Option('d', "database", Required = false, Default = "postgres", HelpText = "database name")]
+        public string Database { get; set; }
+
+        [Option('u', "username", Required = false, Default = "postgres", HelpText = "database name")]
+        public string Username { get; set; }
+
+        [Option('p', "password", Required = false, Default = "postgres", HelpText = "database name")]
+        public string Password { get; set; }
+
         [Usage(ApplicationAlias = "Access2PostgreSQL")]
         public static IEnumerable<Example> Examples
         {
@@ -186,6 +200,10 @@ namespace Access2PostgreSQL
                 return new List<Example>() {
                     new Example("Import tables", new Options {
                         DbFilenames = new string[] {"ota_2001_2011.accdb", "ota_2012.accdb", "ota_2013.accdb", "ota_2014.accdb" }
+                    }),
+                    new Example("Import tables", new Options {
+                        Database = "ota",
+                        DbFilenames = new string[] { "ota_2011.accdb" }
                     }),
                 };
             }
